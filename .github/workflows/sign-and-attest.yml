@@ -1,0 +1,9 @@
+name: Supply Chain SBOM Gate
+on: [push, pull_request]
+jobs:
+  pester:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - shell: pwsh
+        run: Invoke-Pester -Path ./tests/SbomAttestation.Tests.ps1 -Output Detailed

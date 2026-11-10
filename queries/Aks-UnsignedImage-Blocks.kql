@@ -1,0 +1,9 @@
+// Hunt rejected AKS pod deployments blocked by Gatekeeper / Ratify SBOM & Cosign verification
+AzureDiagnostics
+| where Category == "kube-audit"
+| where TimeGenerated > ago(24h)
+| extend ResponseStatus = todynamic(log_s).responseStatus
+| where tostring(ResponseStatus.status) == "Failure" and tostring(ResponseStatus.message) has_any ("ratify", "cosign", "sha256", "sbom")
+| extend PodName = tostring(todynamic(log_s).objectRef.name), Namespace = tostring(todynamic(log_s).objectRef.namespace), User = tostring(todynamic(log_s).user.username)
+| project TimeGenerated, Namespace, PodName, User, DenyReason = tostring(ResponseStatus.message)
+| order by TimeGenerated desc

@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "trustPolicies": [
+    {
+      "name": "acr-production-signing-policy",
+      "registryScopes": [
+        "acrprod.azurecr.io/workloads/*"
+      ],
+      "signatureVerification": {
+        "level": "strict"
+      },
+      "trustStores": [
+        "ca:enterprise-signing-root"
+      ]
+    }
+  ]
+}
